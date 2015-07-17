@@ -50,6 +50,8 @@ public class LoadingScreen extends AbstractScreen {
 	public void show() {
 		// Tell the manager to load assets for the loading screen
 		MyGame.manager.load("ui/loading.pack", TextureAtlas.class);
+		MyGame.manager.load("ui/ui.pack", TextureAtlas.class);
+
 
 		// Wait until they are finished loading
 		MyGame.manager.finishLoading();
@@ -57,24 +59,26 @@ public class LoadingScreen extends AbstractScreen {
 		// Initialize the stage where we will place everything
 		stage = new Stage();
 
-		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
+		TextureAtlas atlasLoading = MyGame.manager.get("ui/loading.pack", TextureAtlas.class);
+		TextureAtlas atlasUI = MyGame.manager.get("ui/ui.pack", TextureAtlas.class);
+
 		// Grab the regions from the atlas and create some images
-		logo = new Image(atlas.findRegion("TitleM4ges"));
+		logo = new Image(atlasUI.findRegion("logo"));
 		logo.setSize((float)(Gdx.graphics.getWidth()*.35),(float)( Gdx.graphics.getHeight()*.25));
-		loadingFrame = new Image(atlas.findRegion("loading-frame"));
-		loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
-		screenBg = new Image(atlas.findRegion("screen-bg"));
-		loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
+		loadingFrame = new Image(atlasLoading.findRegion("loading-frame"));
+		loadingBarHidden = new Image(atlasLoading.findRegion("loading-bar-hidden"));
+		screenBg = new Image(atlasLoading.findRegion("screen-bg"));
+		loadingBg = new Image(atlasLoading.findRegion("loading-frame-bg"));
 
 		// Add the loading bar animation
-		Animation anim = new Animation(0.05f, atlas.findRegions("loading-bar-anim") );
+		Animation anim = new Animation(0.05f, atlasLoading.findRegions("loading-bar-anim") );
 		anim.setPlayMode(Animation.PlayMode.LOOP_REVERSED);
 		loadingBar = new LoadingBar(anim);
 
 		// Or if you only need a static bar, you can do
 		// loadingBar = new Image(atlas.findRegion("loading-bar1"));
 
-		Label lb_info = new Label("M4ges - IUT NANCY Charlemagne - 2013/2014", skin);
+		Label lb_info = new Label("La légende de Kikou - F. Kromer", skin);
 
 		
 		// Add all the actors to the stage
@@ -87,12 +91,12 @@ public class LoadingScreen extends AbstractScreen {
 		stage.addActor(lb_info);
 		
 		// Add everything to be loaded, for instance:
-		MyGame.manager.load("effects/skill.pack", TextureAtlas.class);
-		MyGame.manager.load("ui/battleui.pack", TextureAtlas.class);
+//		MyGame.manager.load("effects/skill.pack", TextureAtlas.class);
+//		MyGame.manager.load("ui/battleui.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/maps.pack", TextureAtlas.class);
-		MyGame.manager.load("character/personnage.pack", TextureAtlas.class);
+//		MyGame.manager.load("character/ff/ff.pack", TextureAtlas.class);
 		MyGame.manager.load("ui/scroll.pack", TextureAtlas.class);
-		MyGame.manager.load("items/item.pack", TextureAtlas.class);
+//		MyGame.manager.load("items/item.pack", TextureAtlas.class);
 
 	}
 
@@ -141,7 +145,7 @@ public class LoadingScreen extends AbstractScreen {
 
 			//            if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
 			Gdx.input.vibrate(100);
-			super.game.changeScreen(MyGame.MENUSCREEN);
+			super.game.changeScreen(Constants.MENUSCREEN);
 			//            }
 		}
 

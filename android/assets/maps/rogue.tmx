@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="15" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tilea2" tilewidth="32" tileheight="32">
+  <image source="tilea2.png" width="512" height="384"/>
+  <tile id="2">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="193" name="tilea1" tilewidth="32" tileheight="32">
+  <image source="tilea1.png" width="512" height="384"/>
+ </tileset>
+ <tileset firstgid="385" name="myTileset" tilewidth="32" tileheight="32">
+  <image source="myTileset.png" width="64" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Calque de Tile 1" width="32" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzF08sNwjAQBFCDRAlQAAHuSKECCA3wuZMOoAPokE8DEAphkNaStVq8i5PA4SmRPcpYdpw550aQJT5L6EABS3qPucLNkLPy/RvYGvIVPFvotxqSHvlXvzcN8Owc8sBCyOzhQOvQzpZ3a/25gGeOcKJ+7Wzb6E/dez+W0m+9a7E11Om33jXJGS7QhwHr52toev/f7vCAMUyUrNSvke5IzC7A51bC99dKhs9/Uhr6Y2Zf5uv8s03oEj4e+/9+4QWPtStM
+  </data>
+ </layer>
+ <layer name="Calque 2" width="32" height="15">
+  <properties>
+   <property name="blocked" value="false"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJy9VFsKwDAIK3Q32e5/xu2nICHxsUoDw4HRqK0d4z8m2PU/CVfF7oDp39/3OBZ53fpVRPWhxVkva/3IUTmwbpYb0cE5qc/m26WfOSMW26Wfhb0DXi42oy79KlfFRPut+lT7zvajWjPLGfmjdzLyXQ4no5/RiO63x/HOxcar+Z8A67/az659AcSlD4c=
+  </data>
+ </layer>
+ <layer name="walkable" width="32" height="15" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJy9lFEKACEIROvodvK+FhZRm1ErGIJl842iyhxDClq/e6nvlvTbiiI+47+Tn4lh+UE8S/DvKY7l24rt5ey99zwidbvF9/Lu4DN91c3P9FgUK+qNKv87yH448dm5ZucjmydaI2T/VHYowmcYUY1YaT46Ozfk7aaX2jAF89A=
+  </data>
+ </layer>
+</map>

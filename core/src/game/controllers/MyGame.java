@@ -1,11 +1,11 @@
 package game.controllers;
 
-import game.models.world.Joueur;
+import game.util.Constants;
 import game.util.GamePreferences;
+import game.views.CreatePlayerScreen;
 import game.views.LoadingScreen;
 import game.views.MapScreen;
 import game.views.MenuPrincipalScreen;
-import game.views.TiledTest;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -26,21 +26,11 @@ public class MyGame extends Game{
 
 	private Hashtable<Integer,Screen> screenHashtable;
 
-	public final static int LOADINGSCREEN = 0;
-	public final static int MENUSCREEN = 10;
-	public final static int NEWCHARACTERSCREEN = 20;
-	public final static int CHATSCREEN = 30;
-	public final static int BATTLESCREEN = 40;
-	public final static int RESULTSCREEN = 50;
-	public final static int DICOSCREEN = 60;
-	public final static int FINALSCREEN = 70;
-	public static final int MAPSCREEN = 80;
-
 
 	/**
 	 * le personnage du joueur initialise lors de la creation
 	 */
-	public Joueur player;
+	public game.models.world.Character player;
 	/**
 	 * interface qui permet l'appel a des methodes propres a android
 	 */
@@ -58,7 +48,7 @@ public class MyGame extends Game{
 	public MyGame(UITrick actionResolver) {
 		super();
 		this.androidUI = actionResolver;
-
+		this.player = null;
 		manager = new AssetManager();
 
 	}
@@ -67,11 +57,13 @@ public class MyGame extends Game{
 	@Override
 	public void create() {
 		screenHashtable = new Hashtable<Integer, Screen>();
-		screenHashtable.put(LOADINGSCREEN, new LoadingScreen(this));
-		screenHashtable.put(MENUSCREEN, new MenuPrincipalScreen(this));
-		screenHashtable.put(MAPSCREEN, new TiledTest(this));
+		screenHashtable.put(Constants.LOADINGSCREEN, new LoadingScreen(this));
+		screenHashtable.put(Constants.MENUSCREEN, new MenuPrincipalScreen(this));
+		screenHashtable.put(Constants.CREATEPLAYERSCREEN, new CreatePlayerScreen(this));
+		screenHashtable.put(Constants.MAPSCREEN, new MapScreen(this));
+		
 
-		changeScreen(0);
+		changeScreen(Constants.LOADINGSCREEN);
 	}
 
 	/**

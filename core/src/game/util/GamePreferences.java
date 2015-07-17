@@ -36,10 +36,9 @@ public class GamePreferences {
 	public boolean useMonochromeShader;
 	//stats
 	public long timePlayed;
-	public int nbChamanPlayed;
-	public int nbNecroPlayed;
-	public int nbAquaPlayed;
-	public int nbPyroPlayed;
+	public int nbPandaPlayed;
+	public int nbPikachuPlayed;
+	public int nbMarioPlayed;
 	//succes
 	public boolean suc_creerUnePartie;
 	//sauvegarde
@@ -62,10 +61,9 @@ public class GamePreferences {
 		useMonochromeShader = prefs.getBoolean("useMonochromeShader", false);
 		//stats
 		timePlayed = prefs.getLong("timePlayed",0);
-		nbChamanPlayed = prefs.getInteger("nbChamanPlayed", 0);
-		nbNecroPlayed = prefs.getInteger("nbNecroPlayed", 0);
-		nbAquaPlayed = prefs.getInteger("nbAquaPlayed", 0);
-		nbPyroPlayed = prefs.getInteger("nbPyroPlayed", 0);
+		nbPandaPlayed = prefs.getInteger("nbKikouPlayed", 0);
+		nbPikachuPlayed = prefs.getInteger("nbPikachuPlayed", 0);
+		nbMarioPlayed = prefs.getInteger("nbMarioPlayed", 0);
 		//succes
 		suc_creerUnePartie = prefs.getBoolean("creerUnePartie",true);
 		//sauvegarde
@@ -82,10 +80,9 @@ public class GamePreferences {
 		prefs.putBoolean("useMonochromeShader", useMonochromeShader);
 		//stats
 		prefs.putLong("timePlayed", timePlayed);
-		prefs.getInteger("nbChamanPlayed", nbChamanPlayed);
-		prefs.getInteger("nbNecroPlayed", nbNecroPlayed);
-		prefs.getInteger("nbAquaPlayed",nbAquaPlayed);
-		prefs.getInteger("nbPyroPlayed", nbPyroPlayed);
+		prefs.getInteger("nbKikouPlayed", nbPandaPlayed);
+		prefs.getInteger("nbPikachuPlayed", nbPikachuPlayed);
+		prefs.getInteger("nbMarioPlayed",nbMarioPlayed);
 		//succes
 		prefs.putBoolean("creerUnePartie", suc_creerUnePartie);
 		//sauvegarde

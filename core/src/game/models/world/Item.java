@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -14,7 +16,7 @@ public class Item {
 	/**
 	 * arraylist permettant de repertorier les items existants
 	 */
-	public static ArrayList<Item> listItem;
+	public static HashMap<Integer, Item> listItem;
 	private static volatile TextureAtlas atlas;
 
 	//attribut d'un objet
@@ -59,18 +61,18 @@ public class Item {
 	/**
 	 * initialise la liste d'item
 	 */
-	public static ArrayList<Item> buildListItem() {
+	public static HashMap<Integer, Item> buildListItem() {
 		if(listItem == null){
-			listItem = new ArrayList<Item>();
-			listItem.add(new Item(7026,"Cle",-1,30));
-			listItem.add(new Item(7170,"Costume",1,50));
-			listItem.add(new Item(2407,"Chaussures Femme",-1,50));
-			listItem.add(new Item(2338,"Robe",-1,50));
-			listItem.add(new Item(2634,"Alliance Homme",-1,50));
-			listItem.add(new Item(2635,"Alliance Femme",-1,50));
-			listItem.add(new Item(7801,"Lettre",-1,50));
-			listItem.add(new Item(744,"Fleurs",-1,50));
-			listItem.add(new Item(529,"Bonbons",-1,50));
+			listItem = new HashMap<Integer, Item>();
+			listItem.put(7026, new Item(7026,"Cle",-1,30));
+			listItem.put(7170,new Item(7170,"Costume",1,50));
+			listItem.put(2407,new Item(2407,"Chaussures Femme",-1,50));
+			listItem.put(2338,new Item(2338,"Robe",-1,50));
+			listItem.put(2634,new Item(2634,"Alliance Homme",-1,50));
+			listItem.put(2635,new Item(2635,"Alliance Femme",-1,50));
+			listItem.put(7801,new Item(7801,"Lettre",-1,50));
+			listItem.put(744,new Item(744,"Fleurs",-1,50));
+			listItem.put(529,new Item(529,"Bonbons",-1,50));
 			 
 		}
 		return listItem;
@@ -82,10 +84,8 @@ public class Item {
 	 * @return
 	 */
 	public static Item selectItemFromItemID(int itemId) {
-		for (Item it : buildListItem()) {
-			if (it.id == itemId) {
-				return it;
-			}
+		if(listItem.containsKey(itemId)){
+			return listItem.get(itemId);
 		}
 		return null;
 	}
