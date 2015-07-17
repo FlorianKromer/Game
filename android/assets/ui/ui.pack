@@ -1,0 +1,54 @@
+
+ui.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+logo
+  rotate: false
+  xy: 1, 305
+  size: 651, 166
+  orig: 651, 166
+  offset: 0, 0
+  index: -1
+level-bar
+  rotate: false
+  xy: 1, 157
+  size: 318, 146
+  orig: 318, 146
+  offset: 0, 0
+  index: -1
+player-bar
+  rotate: false
+  xy: 654, 325
+  size: 318, 146
+  orig: 318, 146
+  offset: 0, 0
+  index: -1
+dialog
+  rotate: false
+  xy: 1, 1
+  size: 290, 154
+  orig: 290, 154
+  offset: 0, 0
+  index: -1
+blue_button
+  rotate: false
+  xy: 321, 231
+  size: 254, 72
+  orig: 254, 72
+  offset: 0, 0
+  index: -1
+grey_button
+  rotate: false
+  xy: 321, 157
+  size: 254, 72
+  orig: 254, 72
+  offset: 0, 0
+  index: -1
+red_button
+  rotate: false
+  xy: 293, 83
+  size: 254, 72
+  orig: 254, 72
+  offset: 0, 0
+  index: -1

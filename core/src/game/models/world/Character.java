@@ -1,50 +1,48 @@
 package game.models.world;
 
-import game.util.Constants;
+import game.controllers.MyGame;
 
-import java.util.Arrays;
-
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Character extends Sprite{
+	
+
+	//animation
 	private static final int nb_colone = 4;
-	private static final int nb_ligne = 8;
+	private static final int nb_ligne = 4;
 	private static final int nombre_image_animation = 4;
 	private static final float duree_animation = 1f;
+	protected Texture sheetTexture;
+	protected Animation animationLapin[];
+	protected TextureRegion regionCourante,regionInitial;
+	protected  int largeur_texture ;
+	protected  int hauteur_texture;
+	protected  float   temps;
+	protected int typeAnimation;
+	protected boolean animationStop;
 	private  float vitesse = 32f;
+	
+	//status fields
+	private String classType;
+	private String name;
+	private char sex;
 
-	private Texture sheetTexture;
-	private Animation animationLapin[];
-	private TextureRegion regionCourante,regionInitial;
-
-	private  int largeur_texture ;
-	private  int hauteur_texture;
-
-	private  float   temps;
-
-	private int typeAnimation;
-	private boolean animationStop;
-
-
-	public Character() {
-		       
-
-		// Initialisation  
-		sheetTexture = new Texture(Gdx.files.internal("maps/rabbitmanSheet.PNG"));
+	public Character(char sex, String name, String classType) {
+		this.setClassType(classType);
+		this.setName(name);
+		
+		
+		sheetTexture = new Texture(Gdx.files.internal("character/ff/"+classType+"_"+sex+".PNG"));
 		largeur_texture = sheetTexture.getWidth();
 		hauteur_texture = sheetTexture.getHeight();
 		animationStop = false;
-		animationLapin = new Animation[8] ;
+		animationLapin = new Animation[nb_ligne] ;
 		typeAnimation=0;
 		temps=0.0f;
 
@@ -52,17 +50,17 @@ public class Character extends Sprite{
 		TextureRegion[][] tmp = TextureRegion.split(sheetTexture, largeur_texture/nb_colone, hauteur_texture/nb_ligne);
 		regionInitial = tmp[0][1];
 
-		// Positionner le Lapin en milieu
-		setX(Constants.VIEWPORT_GUI_WIDTH/2);
-		setY(Constants.VIEWPORT_GUI_HEIGHT/2);
 
 		// Instancier l'animation
-		for(int i=0;i<8;i++)
+		for(int i=0;i<nb_ligne;i++)
 			animationLapin[i] = new Animation(duree_animation/nombre_image_animation, tmp[i]);
         
 	}
 
-
+	public void initSprite(String classType){
+		this.classType = classType;
+		
+	}
 
 	@Override
 	public void draw(Batch batch) {
@@ -76,7 +74,8 @@ public class Character extends Sprite{
 		this.setRegion(regionCourante);
 		this.setRegionWidth(regionCourante.getRegionWidth());
 		this.setRegionHeight(regionCourante.getRegionHeight());
-		this.setSize(regionCourante.getRegionWidth()*2, regionCourante.getRegionHeight()*2);
+		this.setSize(32, 48);
+//		this.setScale(0.8f);
 
 		super.draw(batch);
 
@@ -87,11 +86,6 @@ public class Character extends Sprite{
 	public void setPosition(float x, float y){
 		super.setPosition(x, y);
 	}
-
-
-
-
-
 
 	public int getTypeAnimation() {
 		return typeAnimation;
@@ -113,5 +107,41 @@ public class Character extends Sprite{
 
 	public void setVitesse(float vitesse) {
 		this.vitesse = vitesse;
+	}
+
+
+
+	public String getClassType() {
+		return classType;
+	}
+
+
+
+	public void setClassType(String classType) {
+		this.classType = classType;
+	}
+
+
+
+	public String getName() {
+		return name;
+	}
+
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+
+	public char getSex() {
+		return sex;
+	}
+
+
+
+	public void setSex(char sex) {
+		this.sex = sex;
 	}
 }

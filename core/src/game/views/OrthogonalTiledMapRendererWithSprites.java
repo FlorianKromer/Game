@@ -3,6 +3,8 @@ package game.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -28,6 +30,10 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
 	@Override
 	public void render() {
 		beginRender();
+	    Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		int currentLayer = 0;
 		for (MapLayer layer : map.getLayers()) {
 			if (layer.isVisible()) {
@@ -46,6 +52,7 @@ public class OrthogonalTiledMapRendererWithSprites extends OrthogonalTiledMapRen
 				}
 			}
 		}
+	    Gdx.gl.glDisable(GL20.GL_BLEND);
 		endRender();
 	}
 }

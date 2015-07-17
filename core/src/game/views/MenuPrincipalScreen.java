@@ -176,11 +176,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	public void show() {
 		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
 		Gdx.input.setInputProcessor(stage);
-		float w = Constants.VIEWPORT_GUI_WIDTH;
-		float h =Constants.VIEWPORT_GUI_HEIGHT;
 
-		TextureAtlas atlas = MyGame.manager.get("ui/loading.pack",
-				TextureAtlas.class);
+		TextureAtlas atlas = MyGame.manager.get("ui/ui.pack",TextureAtlas.class);
 
 
 
@@ -190,7 +187,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		Stack stack = new Stack();
 		stage.addActor(stack);
 
-		stack.setSize(w, h);
+		stack.setSize(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		stack.add(buildTitleLayer(atlas));
 		stack.add(buildControlLayer(atlas));
 		stage.addActor(buildServerSetup(atlas));
@@ -300,7 +297,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private Table buildTitleLayer(TextureAtlas atlas) {
 		Table t = new Table();
-		imgTitle = new Image(atlas.findRegion("TitleM4ges"));
+		imgTitle = new Image(atlas.findRegion("logo"));
 		imgTitle.setSize((float) (Constants.VIEWPORT_GUI_WIDTH*0.5), (float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
 		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /2 - imgTitle.getHeight()));
 		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),Actions.fadeIn(3f)));
@@ -319,18 +316,23 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private Table buildControlLayer(TextureAtlas atlas) {
 		Table layer = new Table();
-
-		TextureRegion image = new TextureRegion(
-				atlas.findRegion("magic_button2"));
-		TextButtonStyle style = new TextButtonStyle();
-		style.up = new TextureRegionDrawable(image);
-		style.font = skin.getFont("default-font");
+		//chargement button red et bleu
+		TextureRegion redButton = new TextureRegion(atlas.findRegion("red_button"));
+		TextureRegion blueButton = new TextureRegion(atlas.findRegion("blue_button"));
+		//creation style correspondant
+		TextButtonStyle redStyle = new TextButtonStyle();
+		redStyle.up = new TextureRegionDrawable(redButton);
+		redStyle.font = skin.getFont("default-font");
+		
+		TextButtonStyle blueStyle = new TextButtonStyle();
+		blueStyle.up = new TextureRegionDrawable(blueButton);
+		blueStyle.font = skin.getFont("default-font");
 
 		// buttons with style
 		//		btnMenuHost = buildBtnMenuHost(style);
-		btnMenuPlay = buildBtnMenuPlay(style);
-		btnMenuDico = buildBtnMenuDico(style);
-		btnMenuOptions = buildBtnMenuOption(style);
+		btnMenuPlay = buildBtnMenuPlay(redStyle);
+		//btnMenuDico = buildBtnMenuDico(blueStyle);
+		btnMenuOptions = buildBtnMenuOption(blueStyle);
 		//btnMenuTest = buildBtnMenuTest(style);
 
 		layer.add(btnMenuPlay);
@@ -342,7 +344,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		//layer.add(btnMenuTest).left();
 		layer.left();
 		layer.padLeft((float) (Constants.VIEWPORT_GUI_WIDTH) / 2
-				- image.getRegionWidth() / 2);
+				- redButton.getRegionWidth() / 2);
 		layer.padTop((float) (Constants.VIEWPORT_GUI_HEIGHT) / 2 - layer.getHeight());
 
 		return layer;
@@ -356,6 +358,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private TextButton buildBtnMenuPlay(TextButtonStyle style) {
 		TextButton tbPlay = new TextButton("Créer un perso", style);
+		tbPlay.padBottom(15);
 		tbPlay.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -376,10 +379,12 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private TextButton buildBtnMenuDico(TextButtonStyle style) {
 		TextButton tbDico = new TextButton("Voir l'encyclopedie", style);
+		tbDico.padBottom(15);
+
 		tbDico.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				goToDico();
+//				goToDico();
 			}
 		});
 		tbDico.setPosition((float) (Constants.VIEWPORT_GUI_WIDTH / 2.5),
@@ -395,6 +400,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	private TextButton buildBtnMenuOption(TextButtonStyle style) {
 		TextButton tbOption = new TextButton("Options", style);
+		tbOption.padBottom(15);
+
 		tbOption.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -434,8 +441,8 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		scrollingImage.setHeight(Constants.VIEWPORT_GUI_HEIGHT);
 		scrollingImage.setPosition(0, 0);
 		RepeatAction ra = new RepeatAction();
-		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear),
-				moveBy((int)(scrollingImage.getWidth()*.6), 0, 20.0f, Interpolation.linear)));
+		ra.setAction(sequence(moveTo(0, 0), moveBy((int)(-scrollingImage.getWidth()*0.5), 0, 20.0f, Interpolation.linear),
+				moveBy((int)(scrollingImage.getWidth()*.5), 0, 20.0f, Interpolation.linear)));
 		ra.setCount(RepeatAction.FOREVER);
 		scrollingImage.addAction(ra);
 
@@ -619,7 +626,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 		Interpolation moveEasing = Interpolation.swing;
 		float delayOptionsButton = 0.25f;
 
-		float moveX = 500 * (visible ? -1 : 1);
+		float moveX = Constants.VIEWPORT_GUI_WIDTH * (visible ? -1 : 1);
 		float moveY = 0 * (visible ? -1 : 1);
 		final Touchable touchEnabled = visible ? Touchable.enabled
 				: Touchable.disabled;
@@ -702,15 +709,15 @@ public class MenuPrincipalScreen extends AbstractScreen {
 			prefs.save();
 		}
 		AudioManager.instance.stopMusic();
-		super.game.changeScreen(MyGame.MAPSCREEN);
+		super.game.changeScreen(Constants.CREATEPLAYERSCREEN);
 	}
 	/**
 	 * 
 	 */
-	private void goToDico() {
-		AudioManager.instance.stopMusic();
-		super.game.changeScreen(MyGame.DICOSCREEN);
-	}
+//	private void goToDico() {
+//		AudioManager.instance.stopMusic();
+//		super.game.changeScreen(Constants.DICOSCREEN);
+//	}
 
 	@Override
 	public void hide() {

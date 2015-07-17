@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="15" tilewidth="32" tileheight="32" nextobjectid="3">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
+  <image source="tileset.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="tileset_DPP" tilewidth="32" tileheight="32">
+  <image source="tileset_DPP.png" width="256" height="10400"/>
+ </tileset>
+ <layer name="Calque 1" width="32" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjZGRgYBzFo3gUj+JRPIpHMV0xAB3yA8E=
+  </data>
+ </layer>
+ <layer name="Calque 2" width="32" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgcQI+RgUGfceDsNwPabYGEhxIgNux0gGp0aeA3YszVg4arKQ3sNyHCXFD8mhNpN63CiVhgAg2rgc4PhMKL3uGEns6JiXdqAvSygVC+A8mTWq7hU4/uX0JxBHMvKemeFPWEAKnxQ+/4HAwAAE3/CxI=
+  </data>
+ </layer>
+ <layer name="Calque 3" width="32" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAeuDExMLgTiT2Y8JuVzEKCxUjAn4k4DAPxXAwMCVyY5mSTaT+pIB1odwYW+0n1vwzQTzpIWBeIZQmEMT5Aqv8tgXaZALEpEm2FxX4XoJgrEe4qZYFgYoEK0EwbILZFolWx2OMDFPOlIFwGCsxjpJ5ZCqwMDAJIWJYVVT4NGO7paGG/EGj/Iiq54T3QbG5GBH5HRl7D5kZiwXegPlZWBP6GZg6y2aVUDHdyADXtB6UhWDyuINJcUu1HNpeUOFrDzMCwlhmTTYr9yP4jFWwB2reVGZONDPD5h9L8sQdo315mTDYARo8rIw==
+  </data>
+ </layer>
+</map>
