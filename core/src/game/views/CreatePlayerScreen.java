@@ -1,13 +1,25 @@
 package game.views;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import game.controllers.AbstractScreen;
+import game.controllers.MyGame;
+import game.util.Constants;
+import game.util.GamePreferences;
+
+import java.lang.reflect.InvocationTargetException;
+
+import characters.Archer;
+import characters.BlackMage;
+import characters.Knight;
+import characters.RedMage;
+import characters.Thief;
+import characters.WhiteMage;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -15,39 +27,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-import game.controllers.AbstractScreen;
-import game.controllers.MyGame;
-import game.models.world.Character;
-import game.util.Constants;
-import game.util.GamePreferences;
-
 public class CreatePlayerScreen extends AbstractScreen{
 
 
-	protected Stage stage;
 	private TextButton btnMenuPlay;
-	private TextButton btnMenuOptions;
 	private TextField tfPlayerName;
 	private List<String> listClasses;
 
 	public CreatePlayerScreen(MyGame game) {
 		super(game);
-		this.stage = new Stage(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
 	}
 	@Override
 	public void show() {
-		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
-		Gdx.input.setInputProcessor(stage);
+		super.show();
 
+		
 		stage.clear();
 		// Background initialisation
 		stage.addActor(buildBackgroundLayer());
@@ -107,8 +110,33 @@ public class CreatePlayerScreen extends AbstractScreen{
 			public void keyTyped(TextField textField, char key) {
 				if (key == '\n')
 					textField.getOnscreenKeyboard().show(false);
-				if(! tfPlayerName.getText().equals(""))
+				if(! tfPlayerName.getText().equals("")){
 					btnMenuPlay = buildBtnMenuPlay(false);
+					try {
+						buildPlayerClass();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 
@@ -125,16 +153,42 @@ public class CreatePlayerScreen extends AbstractScreen{
 		a.add(t);
 		return a;
 	}
+	private void buildPlayerClass() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		String classType = (String) listClasses.getItems().get(listClasses.getSelectedIndex());
+		classType = classType.toLowerCase().replaceAll(" ", "");
+		switch (classType) {
+		case "knight":
+			game.player = new Knight('f', tfPlayerName.getText(), "knight");
+			break;
+		case "Black Mage":
+			game.player = new BlackMage('f', tfPlayerName.getText(), "blackMage");
+			break;
+		case "Archer":
+			game.player = new Archer('f', tfPlayerName.getText(), "archer");
+			break;
+		case "Thief":
+			game.player = new Thief('f', tfPlayerName.getText(), "thief");
+			break;
+		case "Red Mage":
+			game.player = new RedMage('f', tfPlayerName.getText(), "redmage");
+			break;
+		case "White Mage":
+			game.player = new WhiteMage('f', tfPlayerName.getText(), "whitemage");
+			break;
+		default:
+			break;
+		}
 
+	}
 	/**
 	 * 
 	 * @return
 	 */
 	private ScrollPane buildClasseSelection(){
 		// creation d'un tableau pour stocker les classes
-		String[] tabPersonnage = { "Knight", "White Mage", "Black Mage","Monk","Red Mage","Thief" };
+		String[] tabPersonnage = { "Knight", "White Mage", "Black Mage","Red Mage","Thief" };
 		// creation d'une select box (appele List ici) avec le tableau ci dessus
-		listClasses = new List(skin);
+		listClasses = new List<String>(skin);
 		listClasses.setSize(100, 100);
 		listClasses.setItems(tabPersonnage);
 		listClasses.addListener(new ChangeListener() {
@@ -142,17 +196,40 @@ public class CreatePlayerScreen extends AbstractScreen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GamePreferences.instance.load();
-				String classType = (String) listClasses.getItems().get(listClasses.getSelectedIndex());
-				classType = classType.toLowerCase().replaceAll(" ", "");
-				game.player = new Character('f', tfPlayerName.getText(),classType);
+				
+				try {
+					buildPlayerClass();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				GamePreferences.instance.save();
-				game.player.setName(tfPlayerName.getText());
-				
+
 				btnMenuPlay = buildBtnMenuPlay(false);
 				//				stage.addActor(game.player);
 				//				showClassDescWindow(true, true);		
 			}
+
+			
 		});
 		// ajout de la List dans un scrollPane, pour pouvoir derouler,
 		// descendre, monter
@@ -190,18 +267,18 @@ public class CreatePlayerScreen extends AbstractScreen{
 	 * @param atlas
 	 * @return
 	 */
-	private Table buildTitleLayer(TextureAtlas atlas) {
-		Table t = new Table();
-		Image imgTitle = new Image(atlas.findRegion("logo"));
-		imgTitle.setSize((float) (Constants.VIEWPORT_GUI_WIDTH*0.5), (float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
-		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /2 - imgTitle.getHeight()));
-		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),Actions.fadeIn(3f)));
-		imgTitle.pack();
-		t.add(imgTitle).width((float) (Constants.VIEWPORT_GUI_WIDTH*0.5)).height((float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
-		t.top();
-		t.pack();
-		return t;
-	}
+//	private Table buildTitleLayer(TextureAtlas atlas) {
+//		Table t = new Table();
+//		Image imgTitle = new Image(atlas.findRegion("logo"));
+//		imgTitle.setSize((float) (Constants.VIEWPORT_GUI_WIDTH*0.5), (float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
+//		imgTitle.setPosition(Constants.VIEWPORT_GUI_WIDTH / 3 - imgTitle.getWidth(), (float) (Constants.VIEWPORT_GUI_HEIGHT /2 - imgTitle.getHeight()));
+//		imgTitle.addAction(sequence(Actions.fadeOut(0.0001f),Actions.fadeIn(3f)));
+//		imgTitle.pack();
+//		t.add(imgTitle).width((float) (Constants.VIEWPORT_GUI_WIDTH*0.5)).height((float) (Constants.VIEWPORT_GUI_HEIGHT*0.35));
+//		t.top();
+//		t.pack();
+//		return t;
+//	}
 	private Image buildBackgroundLayer() {
 		TextureAtlas atlas = MyGame.manager.get("ui/scroll.pack",
 				TextureAtlas.class);

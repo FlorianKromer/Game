@@ -1,28 +1,27 @@
 package game.controllers;
 
 import game.util.Constants;
+import game.views.AbstractUI;
 import game.views.MapScreen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 
-public class MovingController implements InputProcessor {
-	MapScreen screen;
-	int mapPixelWidth;
-	int mapPixelHeight;
-	TiledMapTileLayer collisionLayer ;
+public class AbstractController implements InputProcessor {
+	private MapScreen mapScreen;
+	protected int mapPixelWidth;
+	protected int mapPixelHeight;
+	protected TiledMapTileLayer collisionLayer ;
 
-	public MovingController(MapScreen screen) {
+	public AbstractController(MapScreen mapScreen) {
 		// TODO Auto-generated constructor stub
-		this.screen = (MapScreen) screen;
-		MapProperties prop = screen.getTiledMapRenderer().getMap().getProperties();
+		this.mapScreen = (MapScreen) mapScreen;
+		MapProperties prop = mapScreen.getTiledMapRenderer().getMap().getProperties();
 
 		int mapWidth = prop.get("width", Integer.class);
 		int mapHeight = prop.get("height", Integer.class);
@@ -32,8 +31,12 @@ public class MovingController implements InputProcessor {
 		mapPixelWidth = mapWidth * tilePixelWidth;
 		mapPixelHeight = mapHeight * tilePixelHeight;
 		
-		collisionLayer = (TiledMapTileLayer) screen.getTiledMapRenderer().getMap().getLayers().get("walkable");
+		collisionLayer = (TiledMapTileLayer) mapScreen.getTiledMapRenderer().getMap().getLayers().get("walkable");
+		
+
+
 	}
+
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
@@ -51,20 +54,20 @@ public class MovingController implements InputProcessor {
 	@Override
 	public boolean keyUp(int keycode) {
 		//player
-		float charXPosition = screen.getCharacter().getX();
-		float charYPosition = screen.getCharacter().getY();
-		float moveSize = screen.getCharacter().getVitesse();
+		float charXPosition = mapScreen.getCharacter().getX();
+		float charYPosition = mapScreen.getCharacter().getY();
+		float moveSize = mapScreen.getCharacter().getVitesse();
 		//camera
-		float camViewX = screen.getTiledMapRenderer().getViewBounds().width/2;
-		float camViewY = screen.getTiledMapRenderer().getViewBounds().height/2;
-		float camXPosition = screen.getCamera().position.x;
-		float camYPosition = screen.getCamera().position.y;
+//		float camViewX = screen.getTiledMapRenderer().getViewBounds().width/2;
+//		float camViewY = screen.getTiledMapRenderer().getViewBounds().height/2;
+//		float camXPosition = screen.getCamera().position.x;
+//		float camYPosition = screen.getCamera().position.y;
 
 		//boolean 
 		boolean isMovePossible = false;
-		boolean isCameraNeedToMove = false;
-		boolean camPositionUnderViewPort = false;
-		
+//		boolean isCameraNeedToMove = false;
+//		boolean camPositionUnderViewPort = false;
+//		
 		//debug
 //		System.out.println("camViewY:"+camViewY);
 //		System.out.println("screen.getCamera().position:"+screen.getCamera().position);
@@ -73,52 +76,58 @@ public class MovingController implements InputProcessor {
 //		System.out.println("mapPixelWidth:"+mapPixelWidth+" | mapPixelHeight:"+mapPixelHeight);
 		
 		//cam
-		OrthographicCamera  cam =  screen.getCamera();
+		OrthographicCamera  cam =  mapScreen.getCamera();
 		
-		if(keycode == Input.Keys.UP)
-		{
+		switch (keycode) {
+		case Input.Keys.UP:
 			//position + move <= mapHeight
 			isMovePossible = charYPosition+moveSize <= mapPixelHeight - moveSize;
 
 			if(isMovePossible && ! isCellBlocked(charXPosition, charYPosition+moveSize) ){
-				screen.getCharacter().setPosition(charXPosition, charYPosition+moveSize);
-				screen.getCharacter().setTypeAnimation(3);	
+				mapScreen.getCharacter().setPosition(charXPosition, charYPosition+moveSize);
+				mapScreen.getCharacter().setTypeAnimation(3);	
 					cam.translate(0, moveSize, 0);
 
 			}
-		}
-		else if(keycode == Input.Keys.DOWN)
-		{
+			break;
+			
+		case Input.Keys.DOWN:
 			isMovePossible = charYPosition + moveSize >= moveSize;
 			if(isMovePossible && ! isCellBlocked(charXPosition, charYPosition-moveSize) ){
-				screen.getCharacter().setPosition(charXPosition, charYPosition-moveSize);
-				screen.getCharacter().setTypeAnimation(0);
+				mapScreen.getCharacter().setPosition(charXPosition, charYPosition-moveSize);
+				mapScreen.getCharacter().setTypeAnimation(0);
 				cam.translate(0, -moveSize, 0);
 
 
 			}
-		}
-		if(keycode == Input.Keys.RIGHT )
-		{
+			break;
+		case Input.Keys.RIGHT:
 			isMovePossible = charXPosition+ 2*moveSize <= mapPixelWidth;
 
 			if(isMovePossible && ! isCellBlocked(charXPosition+moveSize, charYPosition) ){
-				screen.getCharacter().setPosition(charXPosition+screen.getCharacter().getVitesse(), charYPosition);
-				screen.getCharacter().setTypeAnimation(2);
+				mapScreen.getCharacter().setPosition(charXPosition+mapScreen.getCharacter().getVitesse(), charYPosition);
+				mapScreen.getCharacter().setTypeAnimation(2);
 				cam.translate(moveSize,0, 0);
 
 			}
-		}
-		if(keycode == Input.Keys.LEFT )
-		{
+			break;
+		case Input.Keys.LEFT:
 			isMovePossible = charXPosition-moveSize >= 0;
 			if(isMovePossible && ! isCellBlocked(charXPosition-moveSize, charYPosition) ){
 
-				screen.getCharacter().setPosition(charXPosition-screen.getCharacter().getVitesse(), charYPosition);
-				screen.getCharacter().setTypeAnimation(1);
+				mapScreen.getCharacter().setPosition(charXPosition-mapScreen.getCharacter().getVitesse(), charYPosition);
+				mapScreen.getCharacter().setTypeAnimation(1);
 				cam.translate(- moveSize,0, 0);
 
 			}
+			break;
+		case Input.Keys.TAB:
+			
+			mapScreen.toggleMenu();
+			Gdx.app.log("Input", "tab");
+			break;
+		default:
+			break;
 		}
 
 
@@ -126,6 +135,7 @@ public class MovingController implements InputProcessor {
 		
 		
 	}
+	
 
 	@Override
 	public boolean keyTyped(char character) {
@@ -164,5 +174,7 @@ public class MovingController implements InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 
 }

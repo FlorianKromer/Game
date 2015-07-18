@@ -3,12 +3,15 @@ package game.controllers;
 import game.util.Constants;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 
@@ -17,7 +20,9 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 	protected SpriteBatch batch;
 	protected OrthographicCamera cameraGUI;
 	private static volatile long timePlayed;
-	
+    protected InputMultiplexer inputMultiplexer;
+    protected Stage stage;
+
 	public AbstractScreen(MyGame game) {
 		this.game = game;
 		this.skin = new Skin(Gdx.files.internal("data/uiskin.json"));
@@ -26,6 +31,11 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 		this.cameraGUI = new OrthographicCamera(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
 		this.cameraGUI.setToOrtho(false); // flip y-axis
 		this.cameraGUI.update();
+		this.stage = new Stage(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
+
+		this.inputMultiplexer = new InputMultiplexer();
+		this.inputMultiplexer.addProcessor(stage);
+
 		AbstractScreen.timePlayed = getTimePlayed();
 	}
 
@@ -39,6 +49,7 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void dispose() {
+		stage.dispose();
 		skin.dispose();
 		batch.dispose();
 	};
@@ -49,6 +60,9 @@ public abstract class AbstractScreen implements com.badlogic.gdx.Screen {
 
 	@Override
 	public void show() {
+		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
+		Gdx.input.setInputProcessor(inputMultiplexer);
+
 	};
 	
 	public void destroy() {

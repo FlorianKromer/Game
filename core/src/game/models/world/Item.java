@@ -2,10 +2,6 @@ package game.models.world;
 
 import game.controllers.MyGame;
 
-import java.util.ArrayList;
-
-
-
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;

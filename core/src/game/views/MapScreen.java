@@ -1,11 +1,13 @@
 package game.views;
 
-import game.controllers.MovingController;
+import game.controllers.AbstractController;
 import game.controllers.MyGame;
-import game.models.world.Character;
 import game.util.Constants;
+import characters.Character;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -23,7 +25,7 @@ public class MapScreen extends AbstractUI {
     private OrthographicCamera camera;
 	private OrthogonalTiledMapRendererWithSprites tiledMapRenderer;
     private Character character;
-    
+    private AbstractController controller;
     
     public MapScreen(MyGame myGame) {
 		super(myGame);
@@ -38,12 +40,16 @@ public class MapScreen extends AbstractUI {
         camera.position.set(2 * collisionLayer.getTileWidth(), (collisionLayer.getHeight() - 2) * collisionLayer.getTileHeight(), 0);
         camera.update();
         
-        
+        //very necessery
+        controller = new AbstractController(this);
+		// TODO Auto-generated constructor stub
+    	this.inputMultiplexer.addProcessor(controller);
 	}
 
     
     @Override
 	public void show() {
+    	super.show();
     	character = super.game.player;
        
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) tiledMapRenderer.getMap().getLayers().get(1);
@@ -53,9 +59,10 @@ public class MapScreen extends AbstractUI {
 
         
         tiledMapRenderer.addSprite(character);
-        Gdx.input.setInputProcessor(new MovingController(this));
         
-        super.show();
+
+        
+        
     }
 
 	@Override

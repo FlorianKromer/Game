@@ -30,7 +30,7 @@ public class MyGame extends Game{
 	/**
 	 * le personnage du joueur initialise lors de la creation
 	 */
-	public game.models.world.Character player;
+	public characters.Character player;
 	/**
 	 * interface qui permet l'appel a des methodes propres a android
 	 */

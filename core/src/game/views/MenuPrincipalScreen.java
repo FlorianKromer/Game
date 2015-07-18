@@ -50,10 +50,6 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * 
  */
 public class MenuPrincipalScreen extends AbstractScreen {
-	/**
-	 * {@link Stage}
-	 */
-	private Stage stage;
 
 	/**
 	 * {@link AtlasRegion} to get the logo
@@ -135,7 +131,6 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 */
 	public MenuPrincipalScreen(MyGame myGame) {
 		super(myGame);
-		this.stage = new Stage(new StretchViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT));
 
 
 		// Load preferences for audio settings and start playing music
@@ -156,9 +151,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		stage.dispose();
-		skin.dispose();
-		batch.dispose();
+
 
 	}
 
@@ -174,9 +167,7 @@ public class MenuPrincipalScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		// on dit a l'appli d'ecouter ce stage quand la methode show est appelee
-		Gdx.input.setInputProcessor(stage);
-
+super.show();
 		TextureAtlas atlas = MyGame.manager.get("ui/ui.pack",TextureAtlas.class);
 
 
@@ -377,21 +368,21 @@ public class MenuPrincipalScreen extends AbstractScreen {
 	 * @param style
 	 * @return
 	 */
-	private TextButton buildBtnMenuDico(TextButtonStyle style) {
-		TextButton tbDico = new TextButton("Voir l'encyclopedie", style);
-		tbDico.padBottom(15);
-
-		tbDico.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+//	private TextButton buildBtnMenuDico(TextButtonStyle style) {
+//		TextButton tbDico = new TextButton("Voir l'encyclopedie", style);
+//		tbDico.padBottom(15);
+//
+//		tbDico.addListener(new ChangeListener() {
+//			@Override
+//			public void changed(ChangeEvent event, Actor actor) {
 //				goToDico();
-			}
-		});
-		tbDico.setPosition((float) (Constants.VIEWPORT_GUI_WIDTH / 2.5),
-				Constants.VIEWPORT_GUI_HEIGHT / 6);
-
-		return tbDico;
-	}
+//			}
+//		});
+//		tbDico.setPosition((float) (Constants.VIEWPORT_GUI_WIDTH / 2.5),
+//				Constants.VIEWPORT_GUI_HEIGHT / 6);
+//
+//		return tbDico;
+//	}
 
 	/**
 	 * 
